@@ -6,19 +6,21 @@ import Login from '../views/Login';
 import Signup from '../views/Signup';
 
 
-const AppRoutes = createBrowserRouter([
-    {
-        path: "/",
-        element: <Home />,
-    },
-    {
-        path: "login",
-        element: <Login />,
-    },
-    {
-        path: "signup",
-        element: <Signup />,
-    },
-]);
+function AppRoutes() {
+    createBrowserRouter([
+        {
+            path: "/",
+            element: <Home />,
+        },
+        {
+            path: "login",
+            element: <Login />,
+        },
+        {
+            path: "signup",
+            element: <Signup />,
+        },
+    ]);
+}
 
 export default AppRoutes;
