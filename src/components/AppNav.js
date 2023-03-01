@@ -1,18 +1,14 @@
 import React from 'react';
-
-import Home from '../views/Home';
-import Login from '../views/Login';
-import Signup from '../views/Signup';
+import { Link } from 'react-router-dom';
 
 const AppNav = () => {
 
     return (
-        <div>
-            <Home />
-            <Login />
-            <Signup />
-            <div>logout</div>
-        </div>
+        <nav>
+            <Link to="home">home </Link>
+            <Link to="login">login </Link>
+            <Link to="signup">signup </Link>
+        </nav>
     );
 }
 

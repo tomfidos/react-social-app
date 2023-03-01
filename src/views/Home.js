@@ -1,8 +1,14 @@
 import React from 'react';
 
+import Posts from '../components/Posts';
+
 const Home = () => {
+    
     return (
-        <h2>home</h2>
+        <div>
+            <h2>home</h2>
+            <Posts />
+        </div>
     );
 }
 
