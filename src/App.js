@@ -3,13 +3,13 @@ import React from 'react';
 import './App.css';
 
 import AppNav from './components/AppNav';
-import Home from './views/Home';
+import AppRoutes from './routes/AppRoutes';
 
-function App() {
+const App = () => {
     return (
         <div className="App">
           <AppNav />
-          <Home />
+          <AppRoutes />
         </div>
     );
 }
