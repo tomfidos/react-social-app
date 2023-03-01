@@ -1,8 +1,12 @@
 import React from 'react';
 
+import './views.css';
+
 const Signup = () => {
     return (
-        <h2>signup</h2>
+        <div className="view">
+            <h2>signup</h2>
+        </div>
     );
 }
 

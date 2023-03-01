@@ -1,8 +1,12 @@
 import React from 'react';
 
+import './views.css';
+
 const Login = () => {
     return (
-        <h2>login</h2>
+        <div className="view">
+            <h2>login</h2>
+        </div>
     );
 }
 
