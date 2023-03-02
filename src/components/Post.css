@@ -1,0 +1,46 @@
+.post {
+    position: relative;
+    border: 2px solid gray;
+    border-radius: 10px;
+    margin: 0.5em auto;
+    max-width: 40em;
+    width: 50%;
+    height: 12em;
+}
+
+.post img {
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+}
+
+.post .name {
+    font-weight: 700;
+    width: fit-content;
+    margin-top: 0.5em;
+    margin-left: 5em;
+}
+
+.post .messageDate {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    margin: 0;
+}
+
+.post .message {
+    margin-top: 0.5em;
+    margin-left: 5em;
+    margin-right: 0.5em;
+    text-align: left;
+}
+
+.post .likeNumber {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    margin: 0;
+}
