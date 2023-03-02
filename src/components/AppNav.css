@@ -1,7 +1,11 @@
 .nav {
     margin: 1em;
+    margin-bottom: 2em;
 }
 
 .nav .navElement {
     padding: 1em;
+    font-size: x-large;
+    text-decoration: none;
+    text-transform: capitalize;
 }
