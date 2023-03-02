@@ -11,6 +11,7 @@ const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const Home = () => {
 
     const [posts, setPosts] = useState([]);
+    const [isLogged] = useState(false);
 
     const getLatestPosts = () => {
         axios.post(LATEST_POSTS).then(response => {
@@ -20,7 +21,7 @@ const Home = () => {
 
     useEffect(() => {
         getLatestPosts();
-    }, []);
+    }, [isLogged]);
     
     return (
         <div className="view">
