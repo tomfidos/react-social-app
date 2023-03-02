@@ -1,12 +1,16 @@
 import React from 'react';
 
 import './views.css';
+import './Login.css';
 
 const Login = () => {
+
     return (
-        <div className="view">
-            <h2>login</h2>
-        </div>
+        <form className="view loginForm">
+            <input placeholder="User name" className="input"/>
+            <input placeholder="Password" className="input"/>
+            <button type="submit" className="button">Login</button>
+        </form>
     );
 }
 
