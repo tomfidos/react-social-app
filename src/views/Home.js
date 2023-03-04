@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import './views.css';
-
 import Post from '../components/Post';
 
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
@@ -11,7 +10,6 @@ const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const Home = () => {
 
     const [posts, setPosts] = useState([]);
-    const [isLogged] = useState(false);
 
     const getLatestPosts = () => {
         axios.post(LATEST_POSTS).then(response => {
@@ -21,7 +19,7 @@ const Home = () => {
 
     useEffect(() => {
         getLatestPosts();
-    }, [isLogged]);
+    }, []);
     
     return (
         <div className="view">

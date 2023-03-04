@@ -7,9 +7,11 @@ const AppNav = () => {
 
     return (
         <nav className='nav'>
-            <Link to="/" className="navElement">home</Link>
-            <Link to="/login" className="navElement">login</Link>
-            <Link to="/signup" className="navElement">signup</Link>
+            <ul>
+                <li><Link to="/" className="navElement">home</Link></li>
+                <li><Link to="/login" className="navElement">login</Link></li>
+                <li><Link to="/signup" className="navElement">signup</Link></li>
+            </ul>
         </nav>
     );
 }

@@ -3,7 +3,12 @@
     margin-bottom: 2em;
 }
 
-.nav .navElement {
+.nav ul li {
+    display: inline;
+    list-style: none;
+}
+
+.nav ul li .navElement {
     padding: 1em;
     font-size: x-large;
     text-decoration: none;
