@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.css';
 import AppNav from './components/AppNav';
+import MainRoutes from './routes/AppRoutes';
 
 const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
 
@@ -29,7 +30,7 @@ const App = () => {
     return (
         <div className="App">
             <AppNav />
-            <Outlet user={user} loginUser={loginUser} />
+            <MainRoutes />
         </div>
     );
 }
