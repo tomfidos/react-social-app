@@ -18,7 +18,7 @@ const Login = (props) => {
     }
 
     return (
-        <form className="view loginForm" onSubmit={(e) => props.loginUser(e, userName, password)}>
+        <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
             <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
             <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
             <button type="submit" className="button">Login</button>
