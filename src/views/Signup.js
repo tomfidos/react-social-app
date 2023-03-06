@@ -23,16 +23,16 @@ const Signup = (props) => {
         setPassword(event.target.value);
     }
 
-    const verifyPassword = (event) => {
+    const readAndSetConfirmedPassword = (event) => {
         setConfirmedPassword(event.target.value);
     }
 
     return (
-        <form className="view form" onSubmit={(event) => props.onSignup(event, userName, email, password)}>
+        <form className="view form" onSubmit={(event) => props.onSignup(event, props.verifyUserName(userName), props.verifyEmail(email), props.verifyPassword(password, confirmedPassword))}>
             <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-            <input placeholder="Email" className="input" type="email" value={email} onChange={readAndSetEmail} />
+            <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
             <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-            <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={verifyPassword} />
+            <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
             <button type="submit" className="button">Signup</button>
         </form>
     );

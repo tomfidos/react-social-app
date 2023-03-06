@@ -56,10 +56,55 @@ const App = () => {
             .catch(error => console.error(error));
     }
 
+    const verifyUserName = (name) => {
+        if (name.length < 4) {
+            console.error('Too short or empty user name');
+            return null;
+        } else if (/^.+\s.+$/g.test(name)) {
+            console.error('Empty characters in user name');
+            return null;
+        } else {
+            return name;
+        }
+    }
+
+    const verifyEmail = (email) => {
+        if (email.length === 0) {
+            console.error('Empty email');
+            return null;
+        } else if (/^.+\s.+$/g.test(email)) {
+            console.error('Empty characters in email');
+            return null;
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+            console.error('Not email');
+            return null;
+        } else {
+            return email;
+        }
+    }
+
+    const verifyPassword = (password, confirmedPassword) => {
+        if (password.length < 6) {
+            console.error('Too short or empty password');
+            return null;
+        } else if (/^[^!@#$%]+$/.test(password)) {
+            console.error('Missing special character in password');
+            return null;
+        } else if (/^[^0-9]+$/.test(password)) {
+            console.error('Missing digit in password');
+            return null;
+        } else if (password !== confirmedPassword) {
+            console.error('Provided passwords are not the same');
+            return null;
+        } else {
+            return password;
+        }
+    }
+
     return (
         <div className="App">
             <AppNav />
-            <MainRoutes onLogin={loginUser} onError={loginError} userData={user} onSignup={signupUser} />
+            <MainRoutes onLogin={loginUser} onError={loginError} userData={user} onSignup={signupUser} verifyUserName={verifyUserName} verifyEmail={verifyEmail} verifyPassword={verifyPassword} />
         </div>
     );
 }
