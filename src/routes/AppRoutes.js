@@ -6,7 +6,6 @@ import Login from '../views/Login';
 import Signup from '../views/Signup';
 
 const MainRoutes = (props) => {
-    console.log(props);
     return (
         <Routes>
             <Route path="/" element={<Home userData={props.user} />} />

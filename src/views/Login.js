@@ -18,6 +18,16 @@ const Login = (props) => {
         setPassword(event.target.value);
     }
 
+    const Form = () => {
+        return (
+            <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
+                <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
+                <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
+                <button type="submit" className="button">Login</button>
+            </form>
+        );
+    }
+
     if (errorCode === null) {
         return (
             <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
@@ -29,11 +39,7 @@ const Login = (props) => {
     } else if (isNaN(parseInt(errorCode))) {
         return (
             <div>
-                <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
-                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-                    <button type="submit" className="button">Login</button>
-                </form><br />
+                <Form />
                 <div className="error">
                     <h4>Login error:</h4>
                     <p>{props.onError.message}</p>
@@ -43,11 +49,7 @@ const Login = (props) => {
     } else {
         return (
             <div>
-                <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
-                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-                    <button type="submit" className="button">Login</button>
-                </form><br />
+                <Form />
                 <div className="error">
                     <h4>Login error:</h4>
                     <p>other error with a code {errorCode}</p>
