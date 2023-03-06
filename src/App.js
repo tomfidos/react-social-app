@@ -12,6 +12,7 @@ import Signup from './views/Signup';
 
 
 const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
+const SIGNUP = 'https://akademia108.pl/api/social-app/user/signup';
 
 
 const App = () => {
@@ -20,19 +21,36 @@ const App = () => {
     const [loginError, setLoginError] = useState(false);
     const navigate = useNavigate();
 
-    const loginUser = (e, userName, password) => {
-        e.preventDefault();
+    const loginUser = (event, userName, password) => {
+        event.preventDefault();
+
+        const loggingUser = {
+            'username': userName,
+            'password': password,
+        }
         
         axios
-            .post(LOGIN, {
-                'username': userName,
-                'password': password,
-            })
+            .post(LOGIN, loggingUser)
             .then(response => {
                 setUser(response.data);
                 navigate('/');
             })
             .catch(error => setLoginError(error));
+    }
+
+    const signupUser = (event, userName, email, password) => {
+        event.preventDefault();
+
+        const newUser = {
+            'username': userName,
+            'email': email,
+            'password': password,
+        };
+
+        axios
+            .post(SIGNUP, newUser)
+            .then(response => console.log(response.data))
+            .catch(error => console.error(error));
     }
 
     return (
@@ -41,8 +59,8 @@ const App = () => {
             {/* <MainRoutes onSubmit={loginUser} /> */}
             <Routes>
                 <Route path="/" element={<Home userData={user} />} />
-                <Route path="login" element={<Login onSubmit={loginUser} onError={loginError} />} />
-                <Route path="signup" element={<Signup />} />
+                <Route path="login" element={<Login onLogin={loginUser} onError={loginError} />} />
+                <Route path="signup" element={<Signup onSignup={signupUser} />} />
             </Routes>
         </div>
     );

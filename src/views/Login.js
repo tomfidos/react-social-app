@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import './views.css';
-import './Login.css';
+import './Forms.css';
 
 
 const Login = (props) => {
@@ -19,7 +19,7 @@ const Login = (props) => {
 
     if (!props.onError) {
         return (
-            <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
+            <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
                 <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <button type="submit" className="button">Login</button>
@@ -28,7 +28,7 @@ const Login = (props) => {
     } else {
         return (
             <div>
-                <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
+                <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
                     <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
                     <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                     <button type="submit" className="button">Login</button>
