@@ -8,6 +8,7 @@ const Login = (props) => {
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const errorCode = props.onError.code;
 
     const readAndSetUserName = (event) => {
         setUserName(event.target.value);
@@ -17,13 +18,27 @@ const Login = (props) => {
         setPassword(event.target.value);
     }
 
-    if (!props.onError) {
+    if (errorCode === null) {
         return (
             <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
                 <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <button type="submit" className="button">Login</button>
             </form>
+        );
+    } else if (isNaN(parseInt(errorCode))) {
+        return (
+            <div>
+                <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
+                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
+                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
+                    <button type="submit" className="button">Login</button>
+                </form><br />
+                <div className="error">
+                    <h4>Login error:</h4>
+                    <p>{props.onError.message}</p>
+                </div>
+            </div>
         );
     } else {
         return (
@@ -33,7 +48,10 @@ const Login = (props) => {
                     <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                     <button type="submit" className="button">Login</button>
                 </form><br />
-                <p className="error">Login error</p>
+                <div className="error">
+                    <h4>Login error:</h4>
+                    <p>other error with a code {errorCode}</p>
+                </div>
             </div>
         );
     }
