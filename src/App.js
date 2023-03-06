@@ -32,10 +32,14 @@ const App = () => {
         axios
             .post(LOGIN, loggingUser)
             .then(response => {
-                setUser(response.data);
-                navigate('/');
+                if (response.status !== 200) {
+                    setLoginError(true);
+                } else {
+                    setUser(response.data);
+                    navigate('/');
+                }
             })
-            .catch(error => setLoginError(error));
+            .catch(error => console.error(error));
     }
 
     const signupUser = (event, userName, email, password) => {
