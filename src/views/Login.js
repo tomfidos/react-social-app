@@ -33,7 +33,7 @@ const Login = (props) => {
                     <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                     <button type="submit" className="button">Login</button>
                 </form><br />
-                <p>Login error</p>
+                <p className="error">Login error</p>
             </div>
         );
     }
