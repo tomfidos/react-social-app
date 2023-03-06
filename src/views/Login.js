@@ -17,13 +17,26 @@ const Login = (props) => {
         setPassword(event.target.value);
     }
 
-    return (
-        <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
-            <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-            <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-            <button type="submit" className="button">Login</button>
-        </form>
-    );
+    if (!props.onError) {
+        return (
+            <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
+                <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
+                <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
+                <button type="submit" className="button">Login</button>
+            </form>
+        );
+    } else {
+        return (
+            <div>
+                <form className="view loginForm" onSubmit={(event) => props.onSubmit(event, userName, password)}>
+                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
+                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
+                    <button type="submit" className="button">Login</button>
+                </form><br />
+                <p>Login error</p>
+            </div>
+        );
+    }
 }
 
 export default Login;

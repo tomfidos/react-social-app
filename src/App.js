@@ -16,7 +16,8 @@ const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
 
 const App = () => {
 
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState();
+    const [loginError, setLoginError] = useState(false);
 
     const loginUser = (e, userName, password) => {
         e.preventDefault();
@@ -26,10 +27,9 @@ const App = () => {
                 'password': password,
             })
             .then(response => {
-                console.log(response);
                 setUser(response.data);
             })
-            .catch(error => console.log(error));
+            .catch(error => setLoginError(error));
     }
 
     return (
@@ -37,8 +37,8 @@ const App = () => {
             <AppNav />
             {/* <MainRoutes onSubmit={loginUser} /> */}
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="login" element={<Login onSubmit={loginUser} />} />
+                <Route path="/" element={<Home userData={user} />} />
+                <Route path="login" element={<Login onSubmit={loginUser} onError={loginError} />} />
                 <Route path="signup" element={<Signup />} />
             </Routes>
         </div>
