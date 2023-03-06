@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import './App.css';
 import AppNav from './components/AppNav';
@@ -18,9 +18,11 @@ const App = () => {
 
     const [user, setUser] = useState();
     const [loginError, setLoginError] = useState(false);
+    const navigate = useNavigate();
 
     const loginUser = (e, userName, password) => {
         e.preventDefault();
+        
         axios
             .post(LOGIN, {
                 'username': userName,
@@ -28,6 +30,7 @@ const App = () => {
             })
             .then(response => {
                 setUser(response.data);
+                navigate('/');
             })
             .catch(error => setLoginError(error));
     }
