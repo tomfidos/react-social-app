@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './App.css';
 import AppNav from './components/AppNav';
 import MainRoutes from './routes/AppRoutes';
+import { verifyUserName, verifyEmail, verifyPassword } from './js/BusinessLogic';
 
 
 const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
@@ -15,6 +16,7 @@ const App = () => {
 
     const [user, setUser] = useState();
     const [loginError, setLoginError] = useState({code: null});
+    const [signupError, setSignupError] = useState({code: null});
     const navigate = useNavigate();
 
     const loginUser = (event, userName, password) => {
@@ -24,7 +26,7 @@ const App = () => {
             username: userName,
             password: password,
         }
-        
+
         axios
             .post(LOGIN, loggingUser)
             .then(response => {
@@ -44,67 +46,37 @@ const App = () => {
     const signupUser = (event, userName, email, password) => {
         event.preventDefault();
 
-        const newUser = {
-            username: userName,
-            email: email,
-            password: password,
-        };
-
-        axios
-            .post(SIGNUP, newUser)
-            .then(response => console.log(response.data))
-            .catch(error => console.error(error));
-    }
-
-    const verifyUserName = (name) => {
-        if (name.length < 4) {
-            console.error('Too short or empty user name');
-            return null;
-        } else if (/^.+\s.+$/g.test(name)) {
-            console.error('Empty characters in user name');
-            return null;
+        if (userName.error || email.error || password.error) {
+            setSignupError({code: 'VERIFICATION_ERROR'});
+            return;
         } else {
-            return name;
-        }
-    }
+            const newUser = {
+                username: userName,
+                email: email,
+                password: password,
+            };
 
-    const verifyEmail = (email) => {
-        if (email.length === 0) {
-            console.error('Empty email');
-            return null;
-        } else if (/^.+\s.+$/g.test(email)) {
-            console.error('Empty characters in email');
-            return null;
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-            console.error('Not email');
-            return null;
-        } else {
-            return email;
+            axios
+                .post(SIGNUP, newUser)
+                .then(response => {
+                    const status = response.status.toString();
+                    if (status.startsWith('20')) {
+                        navigate('login');
+                    } else {
+                        setSignupError({code: status});
+                    }
+                })
+                .catch(error => {
+                    setSignupError(error);
+                });
         }
-    }
 
-    const verifyPassword = (password, confirmedPassword) => {
-        if (password.length < 6) {
-            console.error('Too short or empty password');
-            return null;
-        } else if (/^[^!@#$%]+$/.test(password)) {
-            console.error('Missing special character in password');
-            return null;
-        } else if (/^[^0-9]+$/.test(password)) {
-            console.error('Missing digit in password');
-            return null;
-        } else if (password !== confirmedPassword) {
-            console.error('Provided passwords are not the same');
-            return null;
-        } else {
-            return password;
-        }
     }
 
     return (
         <div className="App">
             <AppNav />
-            <MainRoutes onLogin={loginUser} onError={loginError} userData={user} onSignup={signupUser} verifyUserName={verifyUserName} verifyEmail={verifyEmail} verifyPassword={verifyPassword} />
+            <MainRoutes onLogin={loginUser} onLoginError={loginError} userData={user} onSignup={signupUser} onSignupError={signupError} verifyUserName={verifyUserName} verifyEmail={verifyEmail} verifyPassword={verifyPassword} />
         </div>
     );
 }
