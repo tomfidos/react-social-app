@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import './views.css';
 import './Forms.css';
@@ -11,6 +12,7 @@ const Signup = (props) => {
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const errorCode = props.onError.code;
+    const navigate = useNavigate();
 
     const readAndSetUserName = (event) => {
         setUserName(event.target.value);
@@ -49,7 +51,10 @@ const Signup = (props) => {
                 <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
-                <button type="submit" className="button" disabled={props.signupDisabled}>Signup</button>
+                <div className="buttons">
+                    <button type="submit" className="button" disabled={props.signupDisabled}>Signup</button>
+                    {props.signupDisabled ? <button className="button" onClick={() => navigate("../login")}>Redirect to login</button> : null}
+                </div>
             </form>
         );
     } else if (errorCode === 'VERIFICATION_ERROR') {
