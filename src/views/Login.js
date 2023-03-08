@@ -1,14 +1,45 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import './views.css';
 import './Forms.css';
 
+const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
 
-const Login = (props) => {
 
+const Login = () => {
+
+    const [user, setUser] = useState();
+    const [loginError, setLoginError] = useState({code: null});
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const errorCode = props.onError.code;
+    const errorCode = loginError.code;
+    const navigate = useNavigate();
+
+    const loginUser = (event, userName, password) => {
+        event.preventDefault();
+
+        const loggingUser = {
+            username: userName,
+            password: password,
+        }
+
+        axios
+            .post(LOGIN, loggingUser)
+            .then(response => {
+                const status = response.status;
+                if (status !== 200) {
+                    setLoginError({code: status.toString()});
+                } else {
+                    setUser(response.data);
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                setLoginError(error);
+            });
+    }
 
     const readAndSetUserName = (event) => {
         setUserName(event.target.value);
@@ -18,45 +49,28 @@ const Login = (props) => {
         setPassword(event.target.value);
     }
 
-    const Form = () => {
-        return (
-            <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
+    return (
+        <div>
+            <form className="view form" onSubmit={(event) => loginUser(event, userName, password)}>
                 <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <button type="submit" className="button">Login</button>
             </form>
-        );
-    }
-
-    if (errorCode === null) {
-        return (
-            <form className="view form" onSubmit={(event) => props.onLogin(event, userName, password)}>
-                <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-                <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-                <button type="submit" className="button">Login</button>
-            </form>
-        );
-    } else if (isNaN(parseInt(errorCode))) {
-        return (
-            <div>
-                <Form />
+            {errorCode !== null && isNaN(parseInt(errorCode)) &&
                 <div className="error">
                     <h4>Login error:</h4>
-                    <p>{props.onError.message}</p>
+                    <p>{loginError.message}</p>
                 </div>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <Form />
+            }
+            {errorCode !== null && !isNaN(parseInt(errorCode)) &&
                 <div className="error">
                     <h4>Login error:</h4>
                     <p>other error with a code {errorCode}</p>
                 </div>
-            </div>
-        );
-    }
+            }
+        </div>
+    );
+
 }
 
 export default Login;
