@@ -17,6 +17,7 @@ const App = () => {
     const [user, setUser] = useState();
     const [loginError, setLoginError] = useState({code: null});
     const [signupError, setSignupError] = useState({code: null});
+    const [signupDisabled, setSignupDisabled] = useState(false);
     const navigate = useNavigate();
 
     const loginUser = (event, userName, password) => {
@@ -61,7 +62,7 @@ const App = () => {
                 .then(response => {
                     const status = response.status.toString();
                     if (status.startsWith('20')) {
-                        navigate('login');
+                        setSignupDisabled(true);
                     } else {
                         setSignupError({code: status});
                     }
@@ -76,7 +77,7 @@ const App = () => {
     return (
         <div className="App">
             <AppNav />
-            <MainRoutes onLogin={loginUser} onLoginError={loginError} userData={user} onSignup={signupUser} onSignupError={signupError} verifyUserName={verifyUserName} verifyEmail={verifyEmail} verifyPassword={verifyPassword} />
+            <MainRoutes onLogin={loginUser} onLoginError={loginError} userData={user} onSignup={signupUser} onSignupError={signupError} verifyUserName={verifyUserName} verifyEmail={verifyEmail} verifyPassword={verifyPassword} signupDisabled={signupDisabled} />
         </div>
     );
 }

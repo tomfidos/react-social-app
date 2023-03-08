@@ -25,6 +25,11 @@
     cursor: pointer;
 }
 
+.button:disabled {
+    color: brown;
+    cursor: none;
+}
+
 .error {
     color: red;
 }

@@ -49,7 +49,7 @@ const Signup = (props) => {
                 <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
-                <button type="submit" className="button">Signup</button>
+                <button type="submit" className="button" disabled={props.signupDisabled}>Signup</button>
             </form>
         );
     } else if (errorCode === 'VERIFICATION_ERROR') {
