@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import './views.css';
 import './Forms.css';
+import { verifyUserName, verifyEmail, verifyPassword } from '../js/BusinessLogic';
+
+const SIGNUP = 'https://akademia108.pl/api/social-app/user/signup';
 
 
-const Signup = (props) => {
+const Signup = () => {
 
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
-    const errorCode = props.onError.code;
+    const [signupResponse, setSignupResponse] = useState({});
+    const [signupError, setSignupError] = useState({code: null});
+    const [signupDisabled, setSignupDisabled] = useState(false);
+    const errorCode = signupError.code;
     const navigate = useNavigate();
 
     const readAndSetUserName = (event) => {
@@ -44,54 +51,72 @@ const Signup = (props) => {
         return errorMessages;
     }
 
-    if (errorCode === null) {
-        return (
-            <form className="view form" onSubmit={(event) => props.onSignup(event, props.verifyUserName(userName), props.verifyEmail(email), props.verifyPassword(password, confirmedPassword))}>
+    const signupUser = (event, userName, email, password) => {
+        event.preventDefault();
+
+        if (userName.error || email.error || password.error) {
+            setSignupError({code: 'VERIFICATION_ERROR'});
+            return;
+        } else {
+            const newUser = {
+                username: userName.message,
+                email: email,
+                password: password.message,
+            };
+
+            axios
+                .post(SIGNUP, newUser)
+                .then(response => {
+                    setSignupResponse(response.data);
+                    const status = response.status.toString();
+                    if (status.startsWith('20')) {
+                        if (signupResponse.signedup) {
+                            setSignupDisabled(true);
+                        } else {
+                            setSignupError({signedup: false})
+                        }
+                    } else {
+                        setSignupError({
+                            code: status,
+                            signedup: false,
+                        });
+                    }
+                })
+                .catch(error => {
+                    setSignupError(error);
+                });
+        }
+
+    }
+
+    return (
+        <div>
+            <form className="view form" onSubmit={(event) => signupUser(event, verifyUserName(userName), verifyEmail(email), verifyPassword(password, confirmedPassword))}>
                 <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
                 <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
                 <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
                 <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
                 <div className="buttons">
-                    <button type="submit" className="button" disabled={props.signupDisabled}>Signup</button>
-                    {props.signupDisabled ? <button className="button" onClick={() => navigate("../login")}>Redirect to login</button> : null}
+                    <button type="submit" className="button" disabled={signupDisabled}>Signup</button>
+                    {signupDisabled ? <button type="button" className="button" onClick={() => navigate("/login")}>Redirect to login</button> : null}
                 </div>
             </form>
-        );
-    } else if (errorCode === 'VERIFICATION_ERROR') {
-        return (
-            <div>
-                <form className="view form" onSubmit={(event) => props.onSignup(event, props.verifyUserName(userName), props.verifyEmail(email), props.verifyPassword(password, confirmedPassword))}>
-                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-                    <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
-                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-                    <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
-                    <button type="submit" className="button">Signup</button>
-                </form>
+            {errorCode === 'VERIFICATION_ERROR' && 
                 <div className="error">
                     <h4>Incorrect signup data:</h4>
                     <ul>
-                        {informAboutSignupErrors(props.verifyUserName(userName), props.verifyEmail(email), props.verifyPassword(password, confirmedPassword))}
+                        {informAboutSignupErrors(verifyUserName(userName), verifyEmail(email), verifyPassword(password, confirmedPassword))}
                     </ul>
                 </div>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <form className="view form" onSubmit={(event) => props.onSignup(event, props.verifyUserName(userName), props.verifyEmail(email), props.verifyPassword(password, confirmedPassword))}>
-                    <input placeholder="User name" className="input" value={userName} onChange={readAndSetUserName} />
-                    <input placeholder="Email" className="input" value={email} onChange={readAndSetEmail} />
-                    <input placeholder="Password" className="input" value={password} onChange={readAndSetPassword} />
-                    <input placeholder="Confirm password" className="input" value={confirmedPassword} onChange={readAndSetConfirmedPassword} />
-                    <button type="submit" className="button">Signup</button>
-                </form>
+            }
+            {(errorCode !== null && errorCode !== 'VERIFICATION_ERROR') || !signupResponse.signedup && 
                 <div className="error">
                     <h4>Signup error:</h4>
-                    <p>other error with a code {errorCode}</p>
+                    <p>other error: {JSON.stringify(signupResponse.message)}</p>
                 </div>
-            </div>
-        );
-    }
+            }
+        </div>
+    );
     
 }
 
