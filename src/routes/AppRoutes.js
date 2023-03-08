@@ -9,8 +9,8 @@ const MainRoutes = (props) => {
     return (
         <Routes>
             <Route path="/" element={<Home userData={props.user} />} />
-            <Route path="login" element={<Login onLogin={props.onLogin} onError={props.onLoginError} />} />
-            <Route path="signup" element={<Signup onSignup={props.onSignup} onError={props.onSignupError} verifyUserName={props.verifyUserName} verifyEmail={props.verifyEmail} verifyPassword={props.verifyPassword} signupDisabled={props.signupDisabled} />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
         </Routes>
     );
 }
