@@ -15,10 +15,13 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
-    const [signupResponse, setSignupResponse] = useState({});
-    const [signupError, setSignupError] = useState({code: null});
+    const [signupResponse, setSignupResponse] = useState({
+        status: 200,
+        signedup: true,
+    });
+    const [signupError, setSignupError] = useState({status: null});
     const [signupDisabled, setSignupDisabled] = useState(false);
-    const errorCode = signupError.code;
+    const errorStatus = signupError.status;
     const navigate = useNavigate();
 
     const readAndSetUserName = (event) => {
@@ -55,35 +58,36 @@ const Signup = () => {
         event.preventDefault();
 
         if (userName.error || email.error || password.error) {
-            setSignupError({code: 'VERIFICATION_ERROR'});
+            setSignupError({status: 'VERIFICATION_ERROR'});
             return;
         } else {
             const newUser = {
                 username: userName.message,
-                email: email,
+                email: email.message,
                 password: password.message,
             };
 
             axios
                 .post(SIGNUP, newUser)
                 .then(response => {
-                    setSignupResponse(response.data);
-                    const status = response.status.toString();
-                    if (status.startsWith('20')) {
-                        if (signupResponse.signedup) {
-                            setSignupDisabled(true);
-                        } else {
-                            setSignupError({signedup: false})
-                        }
+                    const status = response.status;
+                    const data = response.data;
+                    if (status.toString().startsWith('20') && data.signedup) {
+                        setSignupDisabled(true);
                     } else {
-                        setSignupError({
-                            code: status,
-                            signedup: false,
-                        });
+                        console.log(response);
                     }
+                    setSignupResponse({
+                        status: status,
+                        ...response.data,
+                    });
                 })
                 .catch(error => {
-                    setSignupError(error);
+                    console.log(error);
+                    setSignupError({
+                        status: error.code,
+                        ...error,
+                    });
                 });
         }
 
@@ -101,7 +105,7 @@ const Signup = () => {
                     {signupDisabled ? <button type="button" className="button" onClick={() => navigate("/login")}>Redirect to login</button> : null}
                 </div>
             </form>
-            {errorCode === 'VERIFICATION_ERROR' && 
+            {errorStatus === 'VERIFICATION_ERROR' &&
                 <div className="error">
                     <h4>Incorrect signup data:</h4>
                     <ul>
@@ -109,10 +113,16 @@ const Signup = () => {
                     </ul>
                 </div>
             }
-            {(errorCode !== null && errorCode !== 'VERIFICATION_ERROR') || !signupResponse.signedup && 
+            {(errorStatus !== 'VERIFICATION_ERROR' && errorStatus !== null ) &&
                 <div className="error">
                     <h4>Signup error:</h4>
-                    <p>other error: {JSON.stringify(signupResponse.message)}</p>
+                    <p>{Object.values(signupError.message)}</p>
+                </div>
+            }
+            {(!signupResponse.status.toString().startsWith('20') || !signupResponse.signedup) &&
+                <div className="error">
+                    <h4>Signup error:</h4>
+                    <p>{Object.values(signupResponse.message)}</p>
                 </div>
             }
         </div>
