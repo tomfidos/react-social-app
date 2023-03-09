@@ -43,13 +43,13 @@ const Signup = () => {
     const informAboutSignupErrors = (userName, email, password) => {
         const errorMessages = [];
         if (userName.error) {
-            errorMessages.push(<li key="name">{userName.message}</li>);
+            errorMessages.push(userName.message);
         }
         if (email.error) {
-            errorMessages.push(<li key="email">{email.message}</li>);
+            errorMessages.push(email.message);
         }
         if (password.error) {
-            errorMessages.push(<li key="password">{password.message}</li>);
+            errorMessages.push(password.message);
         }
         return errorMessages;
     }
@@ -109,7 +109,13 @@ const Signup = () => {
                 <div className="error">
                     <h4>Incorrect signup data:</h4>
                     <ul>
-                        {informAboutSignupErrors(verifyUserName(userName), verifyEmail(email), verifyPassword(password, confirmedPassword))}
+                        {
+                            informAboutSignupErrors(
+                                verifyUserName(userName),
+                                verifyEmail(email),
+                                verifyPassword(password, confirmedPassword)
+                            ).map((error, index) => <li key={index}>{error}</li>)
+                        }
                     </ul>
                 </div>
             }
