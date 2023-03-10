@@ -28,13 +28,15 @@ const Login = (props) => {
             .post(LOGIN, loggingUser)
             .then(response => {
                 const status = response.status;
+                const data = response.data;
                 if (status !== 200) {
                     setLoginError({code: status.toString()});
                 } else {
                     props.onUserDataChange({
                         isLogged: true,
-                        ...response.data,
+                        ...data,
                     });
+                    window.localStorage.setItem(data.id, data);
                     navigate('/');
                 }
             })
