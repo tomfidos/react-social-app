@@ -8,9 +8,8 @@ import './Forms.css';
 const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
 
 
-const Login = () => {
+const Login = (props) => {
 
-    const [user, setUser] = useState();
     const [loginError, setLoginError] = useState({code: null});
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -32,7 +31,10 @@ const Login = () => {
                 if (status !== 200) {
                     setLoginError({code: status.toString()});
                 } else {
-                    setUser(response.data);
+                    props.onUserDataChange({
+                        isLogged: true,
+                        ...response.data,
+                    });
                     navigate('/');
                 }
             })

@@ -7,19 +7,22 @@ import Post from '../components/Post';
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 
 
-const Home = () => {
+const Home = (props) => {
 
     const [posts, setPosts] = useState([]);
 
-    const getLatestPosts = () => {
+    const getLatestPosts = (isLogged) => {
         axios.post(LATEST_POSTS).then(response => {
+            if (isLogged) {
+                console.log('logged user');
+            }
             setPosts(response.data);
         });
     }
 
     useEffect(() => {
-        getLatestPosts();
-    }, []);
+        getLatestPosts(props.userData.isLogged);
+    }, [props.userData]);
     
     return (
         <div className="view">

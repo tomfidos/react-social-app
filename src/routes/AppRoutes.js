@@ -8,8 +8,8 @@ import Signup from '../views/Signup';
 const MainRoutes = (props) => {
     return (
         <Routes>
-            <Route path="/" element={<Home userData={props.user} />} />
-            <Route path="login" element={<Login />} />
+            <Route path="/" element={<Home userData={props.userData} />} />
+            <Route path="login" element={<Login onUserDataChange={props.onUserDataChange} />} />
             <Route path="signup" element={<Signup />} />
         </Routes>
     );

@@ -19,3 +19,9 @@
     text-decoration: none;
     text-transform: capitalize;
 }
+
+.nav ul li .logout {
+    font-size: medium;
+    line-height: 2em;
+    cursor: pointer;
+}
