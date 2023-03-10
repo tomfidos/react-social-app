@@ -11,18 +11,15 @@ const Home = (props) => {
 
     const [posts, setPosts] = useState([]);
 
-    const getLatestPosts = (isLogged) => {
+    const getLatestPosts = () => {
         axios.post(LATEST_POSTS).then(response => {
-            if (isLogged) {
-                console.log('logged user');
-            }
             setPosts(response.data);
         });
     }
 
     useEffect(() => {
-        getLatestPosts(props.userData.isLogged);
-    }, [props.userData]);
+        getLatestPosts();
+    }, [props.userData.isLogged]);
     
     return (
         <div className="view">
