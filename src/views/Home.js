@@ -7,13 +7,15 @@ import AddPost from '../components/AddPost';
 
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const ADD_POST = 'https://akademia108.pl/api/social-app/post/add';
+const DELETE_POST = 'https://akademia108.pl/api/social-app/post/delete';
 
 
 const Home = (props) => {
 
     const [posts, setPosts] = useState([]);
     const [newPostCounter, setNewPostCounter] = useState(0);
-    const [addPostError, setAddPostError] = useState({
+    const [deletedPostCounter, setDeletedPostCounter] = useState(0);
+    const [postError, setPostError] = useState({
         isError: false,
         message: null,
     });
@@ -30,7 +32,7 @@ const Home = (props) => {
         axios
             .post(ADD_POST, {content: postContent})
             .then(() => {
-                setAddPostError({
+                setPostError({
                     isError: false,
                     message: null,
                 });
@@ -38,7 +40,28 @@ const Home = (props) => {
             })
             .catch(error => {
                 console.error(error);
-                setAddPostError({
+                setPostError({
+                    isError: true,
+                    message: error.message,
+                });
+            });
+    }
+
+    const deletePost = (event, postId) => {
+        event.preventDefault();
+
+        axios
+            .post(DELETE_POST, {post_id: parseInt(postId)})
+            .then(() => {
+                setPostError({
+                    isError: false,
+                    message: null,
+                });
+                setDeletedPostCounter(deletedPostCounter + 1)
+            })
+            .catch(error => {
+                console.error(error);
+                setPostError({
                     isError: true,
                     message: error.message,
                 });
@@ -52,18 +75,22 @@ const Home = (props) => {
     useEffect(() => {
         getLatestPosts();
     }, [newPostCounter]);
+
+    useEffect(() => {
+        getLatestPosts();
+    }, [deletedPostCounter]);
     
     return (
         <div className="view">
             {props.userData.isLogged && <AddPost onAddPost={addNewPost} postCounter={newPostCounter} />}
-            {props.userData.isLogged && addPostError.isError &&
+            {props.userData.isLogged && postError.isError &&
                 <div className="error">
                     <h4>Error:</h4>
-                    <p>{addPostError.message}</p>
+                    <p>{postError.message}</p>
                 </div>
             }
             {posts.map(post => {
-                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} />);
+                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} />);
             })}
         </div>
     );

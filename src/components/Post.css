@@ -36,7 +36,20 @@
     margin-top: 0.5em;
     margin-left: 5em;
     margin-right: 0.5em;
+    margin-bottom: 2.5em;
     text-align: left;
+}
+
+.post .deletePost {
+    position: absolute;
+    bottom: 0.5em;
+    right: 6em;
+}
+
+.post .likePost {
+    position: absolute;
+    bottom: 0.5em;
+    right: 2em;
 }
 
 .post .likeNumber {

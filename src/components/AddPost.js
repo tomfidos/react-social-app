@@ -20,7 +20,7 @@ const AddPost = (props) => {
     }
 
     useEffect(() => {
-        clearTextarea(props.postCounter)
+        clearTextarea(props.postCounter);
     }, [props.postCounter]);
 
     return (
