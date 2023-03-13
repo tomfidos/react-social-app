@@ -8,6 +8,8 @@ import AddPost from '../components/AddPost';
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const ADD_POST = 'https://akademia108.pl/api/social-app/post/add';
 const DELETE_POST = 'https://akademia108.pl/api/social-app/post/delete';
+const LIKE_POST = 'https://akademia108.pl/api/social-app/post/like';
+const DISLIKE_POST = 'https://akademia108.pl/api/social-app/post/dislike';
 
 
 const Home = (props) => {
@@ -68,6 +70,37 @@ const Home = (props) => {
             });
     }
 
+    const getPostGradeDirection = (likes, userId) => {
+        const likeFromUser = likes.filter(like => like.id === userId);
+        if (likeFromUser.length > 0) {
+            return 'Dislike';
+        } else {
+            return 'Like';
+        }
+    }
+
+    const togglePostGradeDirection = (event, likes, userId, postId) => {
+        event.preventDefault();
+
+        if (getPostGradeDirection(likes, userId) === 'Dislike') {
+            axios
+                .post(DISLIKE_POST, {post_id: postId})
+                .then(() => {
+                    getPostGradeDirection(likes, userId);
+                    getLatestPosts();
+                })
+                .catch(error => console.error(error));
+        } else {
+            axios
+                .post(LIKE_POST, {post_id: postId})
+                .then(() => {
+                    getPostGradeDirection(likes, userId);
+                    getLatestPosts();
+                })
+                .catch(error => console.error(error));
+        }
+    }
+
     useEffect(() => {
         getLatestPosts();
     }, [props.userData.isLogged]);
@@ -90,7 +123,7 @@ const Home = (props) => {
                 </div>
             }
             {posts.map(post => {
-                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} />);
+                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} />);
             })}
         </div>
     );

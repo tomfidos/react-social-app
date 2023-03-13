@@ -13,8 +13,10 @@ const Post = (props) => {
             {props.isLogged &&
                 <button className="button deletePost" onClick={(event) => props.onPostDelete(event, props.postId)}>Delete post</button>
             }
-            <button className="button likePost">Like</button>
-            <p className="likeNumber"></p>
+            {props.isLogged &&
+                <button className="button likePost" onClick={(event) => props.onTogglePostGrade(event, props.likes, props.userId, props.postId)}>{props.postGradeDirection(props.likes, props.userId)}</button>
+            }
+            <p className="likeNumber">{props.likes.length}</p>
         </div>
     );
 
