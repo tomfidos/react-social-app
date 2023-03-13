@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import './views.css';
-import './Forms.css';
+import './Views.css';
+// import './Forms.css';
 import { verifyUserName, verifyEmail, verifyPassword } from '../js/BusinessLogic';
 
 const SIGNUP = 'https://akademia108.pl/api/social-app/user/signup';
