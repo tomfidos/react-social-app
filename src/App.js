@@ -21,7 +21,6 @@ const App = () => {
         axios
             .post(LOGOUT)
             .then(() => {
-                console.log(user.id + ' logged out.');
                 setUser({isLogged: false});
             })
             .catch(error => console.error(error));
