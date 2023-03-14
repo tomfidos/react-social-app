@@ -123,7 +123,7 @@ const Home = (props) => {
                 </div>
             }
             {posts.map(post => {
-                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} />);
+                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} authorId={post.user.id} />);
             })}
         </div>
     );

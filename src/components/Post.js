@@ -10,7 +10,7 @@ const Post = (props) => {
             <p className="name">{props.userName}</p>
             <p className="messageDate">{props.postDate.substr(0, 10)}</p>
             <p className="message">{props.postText}</p>
-            {props.isLogged &&
+            {props.isLogged && props.authorId === props.userId &&
                 <button className="button deletePost" onClick={(event) => props.onPostDelete(event, props.postId)}>Delete post</button>
             }
             {props.isLogged &&
