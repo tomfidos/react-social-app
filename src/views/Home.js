@@ -10,6 +10,9 @@ const ADD_POST = 'https://akademia108.pl/api/social-app/post/add';
 const DELETE_POST = 'https://akademia108.pl/api/social-app/post/delete';
 const LIKE_POST = 'https://akademia108.pl/api/social-app/post/like';
 const DISLIKE_POST = 'https://akademia108.pl/api/social-app/post/dislike';
+const ALL_FOLLOWED = 'https://akademia108.pl/api/social-app/follows/allfollows';
+const FOLLOW = 'https://akademia108.pl/api/social-app/follows/follow';
+const UNFOLLOW = 'https://akademia108.pl/api/social-app/follows/disfollow';
 
 
 const Home = (props) => {
@@ -21,6 +24,7 @@ const Home = (props) => {
         isError: false,
         message: null,
     });
+    const [allFollowedUsers, setAllFollowedUsers] = useState([]);
 
     const getLatestPosts = () => {
         axios.post(LATEST_POSTS).then(response => {
@@ -101,6 +105,44 @@ const Home = (props) => {
         }
     }
 
+    const followOrUnfollowUser = (event, authorId) => {
+        event.preventDefault();
+
+        if (getFollowDirection(authorId) === 'Follow') {
+            axios
+                .post(FOLLOW, {leader_id: authorId})
+                .then(() => {
+                    getFollowDirection(authorId);
+                    getLatestPosts();
+                })
+                .catch(error => console.error(error));
+        } else {
+            axios
+                .post(UNFOLLOW, {leader_id: authorId})
+                .then(() => {
+                    getFollowDirection(authorId);
+                    getLatestPosts();
+                })
+                .catch(error => console.error(error));
+        }
+    }
+
+    const getFollowDirection = (authorId) => {
+        const followedAuthor = allFollowedUsers.filter(user => user.id === authorId);
+        if (followedAuthor.length > 0) {
+            return 'Unfollow';
+        } else {
+            return 'Follow';
+        }
+    }
+
+    const getAllFollowedUsers = () => {
+        axios
+            .post(ALL_FOLLOWED)
+            .then(response => setAllFollowedUsers(response.data))
+            .catch(error => console.error(error));
+    }
+
     useEffect(() => {
         getLatestPosts();
     }, [props.userData.isLogged]);
@@ -112,6 +154,10 @@ const Home = (props) => {
     useEffect(() => {
         getLatestPosts();
     }, [deletedPostCounter]);
+
+    useEffect(() => {
+        getAllFollowedUsers();
+    }, [props.userData.isLogged]);
     
     return (
         <div className="view">
@@ -123,7 +169,7 @@ const Home = (props) => {
                 </div>
             }
             {posts.map(post => {
-                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} authorId={post.user.id} />);
+                return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} authorId={post.user.id} onUserFollowOrUnfollow={followOrUnfollowUser} userFollowDirection={getFollowDirection} />);
             })}
         </div>
     );

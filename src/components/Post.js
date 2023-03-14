@@ -13,6 +13,9 @@ const Post = (props) => {
             {props.isLogged && props.authorId === props.userId &&
                 <button className="button deletePost" onClick={(event) => props.onPostDelete(event, props.postId)}>Delete post</button>
             }
+            {props.isLogged && props.authorId !== props.userId &&
+                <button className="button deletePost" onClick={(event) => props.onUserFollowOrUnfollow(event, props.authorId)}>{props.userFollowDirection(props.authorId)}</button>
+            }
             {props.isLogged &&
                 <button className="button likePost" onClick={(event) => props.onTogglePostGrade(event, props.likes, props.userId, props.postId)}>{props.postGradeDirection(props.likes, props.userId)}</button>
             }
