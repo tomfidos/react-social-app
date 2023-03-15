@@ -4,6 +4,7 @@ import axios from 'axios';
 import './Views.css';
 import Post from '../components/Post';
 import AddPost from '../components/AddPost';
+import UsersToFollow from '../components/UsersToFollow';
 
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const ADD_POST = 'https://akademia108.pl/api/social-app/post/add';
@@ -168,6 +169,7 @@ const Home = (props) => {
                     <p>{postError.message}</p>
                 </div>
             }
+            {props.userData.isLogged && <UsersToFollow avatar="" userName="" />}
             {posts.map(post => {
                 return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} postGradeDirection={getPostGradeDirection} userId={props.userData.isLogged ? props.userData.id : null} onTogglePostGrade={togglePostGradeDirection} authorId={post.user.id} onUserFollowOrUnfollow={followOrUnfollowUser} userFollowDirection={getFollowDirection} />);
             })}
