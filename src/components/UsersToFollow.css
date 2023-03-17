@@ -1,7 +1,7 @@
 .flex-row {
     flex-direction: row;
     justify-content: space-evenly;
-    height: 5em;
+    min-height: 5em;
     font-size: 1em;
     font-family: sans-serif;
 }
@@ -13,6 +13,18 @@
     margin: auto;
 }
 
+.form .user-to-follow img {
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+}
+
+h4 {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
 .form .user-to-follow .no-margin {
     margin: 0;
+    margin-top: 0.5em;
 }

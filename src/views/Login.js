@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import './Views.css';
-// import './Forms.css';
 
 const LOGIN = 'https://akademia108.pl/api/social-app/user/login';
 

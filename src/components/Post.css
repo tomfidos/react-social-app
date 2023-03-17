@@ -38,6 +38,7 @@
     margin-right: 0.5em;
     margin-bottom: 2.5em;
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .post .deletePost {

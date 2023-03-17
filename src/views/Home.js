@@ -103,7 +103,7 @@ const Home = (props) => {
                     <p>{postError.message}</p>
                 </div>
             }
-            {props.userData.isLogged && <UsersToFollow avatar="" userName="" />}
+            {props.userData.isLogged && <UsersToFollow />}
             {posts.map(post => {
                 return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} onPostDelete={deletePost} isLogged={props.userData.isLogged} likes={post.likes} userId={props.userData.isLogged ? props.userData.id : null} authorId={post.user.id} getLatestPostsFunction={getLatestPosts} allFollowedUsers={allFollowedUsers} />);
             })}
