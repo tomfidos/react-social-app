@@ -24,9 +24,10 @@ const Home = (props) => {
     const [allFollowedUsers, setAllFollowedUsers] = useState([]);
 
     const getLatestPosts = () => {
-        axios.post(LATEST_POSTS).then(response => {
-            setPosts(response.data);
-        });
+        axios
+            .post(LATEST_POSTS)
+            .then(response => setPosts(response.data))
+            .catch(error => console.error(error));
     }
 
     const addNewPost = (event, postContent) => {
