@@ -1,58 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import './UsersToFollow.css';
 
-const RECOMMENDATIONS = 'https://akademia108.pl/api/social-app/follows/recommendations';
 const FOLLOW = 'https://akademia108.pl/api/social-app/follows/follow';
 
 
-const UsersToFollow = () => {
-
-    const [recommendedUsers, setRecommendedUsers] = useState([]);
-    const [userFollowClick, setUserFollowClick] = useState(0);
-
-    const getRecommendedUsers = () => {
-        axios
-            .post(RECOMMENDATIONS)
-            .then(response => setRecommendedUsers(response.data))
-            .catch(error => console.error(error));
-    }
+const UsersToFollow = (props) => {
 
     const followUser = (event, leaderId) => {
         event.preventDefault();
 
         axios
             .post(FOLLOW, { leader_id: leaderId })
-            .then(setUserFollowClick(userFollowClick + 1))
+            .then(() => {
+                props.getRecommendedUsers();
+                props.getAllFollowedUsers();
+                props.getLatestPosts();
+            })
             .catch(error => console.error(error));
     }
 
-    useEffect(() => {
-        getRecommendedUsers();
-    }, [userFollowClick]);
-
     return (
         <div className="form flex-row">
-            {recommendedUsers.length >= 1 &&
+            {props.recommendedUsers.length >= 1 &&
                 <div className="user-to-follow">
-                    <img src={recommendedUsers[0].avatar_url} alt="avatar" />
-                    <h4>{recommendedUsers[0].username}</h4>
-                    <button className="button no-margin" onClick={event => followUser(event, recommendedUsers[0].id)}>Follow</button>
+                    <img src={props.recommendedUsers[0].avatar_url} alt="avatar" />
+                    <h4>{props.recommendedUsers[0].username}</h4>
+                    <button className="button no-margin" onClick={event => followUser(event, props.recommendedUsers[0].id)}>Follow</button>
                 </div>
             }
-            {recommendedUsers.length >= 2 &&
+            {props.recommendedUsers.length >= 2 &&
                 <div className="user-to-follow">
-                    <img src={recommendedUsers[1].avatar_url} alt="avatar" />
-                    <h4>{recommendedUsers[1].username}</h4>
-                    <button className="button no-margin" onClick={event => followUser(event, recommendedUsers[1].id)}>Follow</button>
+                    <img src={props.recommendedUsers[1].avatar_url} alt="avatar" />
+                    <h4>{props.recommendedUsers[1].username}</h4>
+                    <button className="button no-margin" onClick={event => followUser(event, props.recommendedUsers[1].id)}>Follow</button>
                 </div>
             }
-            {recommendedUsers.length >= 3 &&
+            {props.recommendedUsers.length >= 3 &&
                 <div className="user-to-follow">
-                    <img src={recommendedUsers[2].avatar_url} alt="avatar" />
-                    <h4>{recommendedUsers[2].username}</h4>
-                    <button className="button no-margin" onClick={event => followUser(event, recommendedUsers[2].id)}>Follow</button>
+                    <img src={props.recommendedUsers[2].avatar_url} alt="avatar" />
+                    <h4>{props.recommendedUsers[2].username}</h4>
+                    <button className="button no-margin" onClick={event => followUser(event, props.recommendedUsers[2].id)}>Follow</button>
                 </div>
             }
         </div>
