@@ -91,7 +91,9 @@ const Home = (props) => {
     }, [deletedPostCounter]);
 
     useEffect(() => {
-        getAllFollowedUsers();
+        if (props.userData.isLogged) {
+            getAllFollowedUsers();
+        }
     }, [props.userData.isLogged]);
     
     return (
