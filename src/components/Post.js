@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import './Post.css';
+import { getPostGradeDirection, getFollowDirection } from '../js/helpers';
 
 const LIKE_POST = 'https://akademia108.pl/api/social-app/post/like';
 const DISLIKE_POST = 'https://akademia108.pl/api/social-app/post/dislike';
@@ -9,15 +10,6 @@ const UNFOLLOW = 'https://akademia108.pl/api/social-app/follows/disfollow';
 const DELETE_POST = 'https://akademia108.pl/api/social-app/post/delete';
 
 const Post = (props) => {
-
-    const getPostGradeDirection = (likes, userId) => {
-        const likeFromUser = likes.filter(like => like.id === userId);
-        if (likeFromUser.length > 0) {
-            return 'Dislike';
-        } else {
-            return 'Like';
-        }
-    }
 
     const togglePostGradeDirection = (event, likes, userId, postId) => {
         event.preventDefault();
@@ -53,15 +45,6 @@ const Post = (props) => {
                 props.getRecommendedUsers();
             })
             .catch(error => console.error(error));
-    }
-
-    const getFollowDirection = (authorId, allFollowedUsers) => {
-        const followedAuthor = allFollowedUsers.filter(user => user.id === authorId);
-        if (followedAuthor.length > 0) {
-            return 'Unfollow';
-        } else {
-            return 'Follow';
-        }
     }
 
     const deletePost = (event, postId) => {
