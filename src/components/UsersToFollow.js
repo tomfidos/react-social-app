@@ -10,6 +10,7 @@ const FOLLOW = 'https://akademia108.pl/api/social-app/follows/follow';
 const UsersToFollow = () => {
 
     const [recommendedUsers, setRecommendedUsers] = useState([]);
+    const [userFollowClick, setUserFollowClick] = useState(0);
 
     const getRecommendedUsers = () => {
         axios
@@ -23,13 +24,13 @@ const UsersToFollow = () => {
 
         axios
             .post(FOLLOW, { leader_id: leaderId })
-            .then()
+            .then(setUserFollowClick(userFollowClick + 1))
             .catch(error => console.error(error));
     }
 
     useEffect(() => {
         getRecommendedUsers();
-    }, []);
+    }, [userFollowClick]);
 
     return (
         <div className="form flex-row">
