@@ -9,6 +9,7 @@ import UsersToFollow from '../components/UsersToFollow';
 const LATEST_POSTS = 'https://akademia108.pl/api/social-app/post/latest';
 const ALL_FOLLOWED = 'https://akademia108.pl/api/social-app/follows/allfollows';
 const RECOMMENDATIONS = 'https://akademia108.pl/api/social-app/follows/recommendations';
+const OLDER_THAN = 'https://akademia108.pl/api/social-app/post/older-then';
 
 
 const Home = (props) => {
@@ -42,6 +43,15 @@ const Home = (props) => {
             .catch(error => console.error(error));
     }
 
+    const loadMorePosts = () => {
+        const oldestPost = posts.sort((a, b) => { return new Date(a.created_at) - new Date(b.created_at) })[0];
+        
+        axios
+            .post(OLDER_THAN, {date: oldestPost.created_at})
+            .then(response => setPosts(posts.concat(response.data).sort((a, b) => { return new Date(b.created_at) - new Date(a.created_at) })))
+            .catch(error => console.error(error));
+    }
+
     useEffect(() => {
         if (props.userData.isLogged) {
             getAllFollowedUsers();
@@ -63,6 +73,7 @@ const Home = (props) => {
             {posts.map(post => {
                 return (<Post key={post.id} avatar={post.user.avatar_url} userName={post.user.username} postDate={post.created_at} postText={post.content} postId={post.id} isLogged={props.userData.isLogged} likes={post.likes} userId={props.userData.isLogged ? props.userData.id : null} authorId={post.user.id} getLatestPosts={getLatestPosts} setPostError={setPostError} allFollowedUsers={allFollowedUsers} getAllFollowedUsers={getAllFollowedUsers} getRecommendedUsers={getRecommendedUsers} />);
             })}
+            <button className="button load-more" onClick={loadMorePosts}>Load more</button>
         </div>
     );
 }
