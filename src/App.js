@@ -27,7 +27,7 @@ const App = () => {
     }
 
     return (
-        <div className="App">
+        <div className="app" data-testid="app">
             <AppNav userData={user} onUserLogout={logoutUser} />
             <MainRoutes userData={user} onUserDataChange={setUserData} />
         </div>
