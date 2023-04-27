@@ -6,7 +6,7 @@ import './AppNav.css';
 const AppNav = (props) => {
 
     return (
-        <nav className='nav'>
+        <nav className='nav'  data-testid="appNav">
             {props.userData.isLogged &&
                 <ul>
                     <li><Link to="/" className="navElement">home</Link></li>
