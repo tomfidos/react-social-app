@@ -33,7 +33,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### `npm test`
 
-### **TBA**
+### **Work in progress**
 
 Launches the test runner in the interactive watch mode.
 
