@@ -69,7 +69,7 @@ const Post = (props) => {
     }
 
     return(
-        <div className="post">
+        <div className="post" data-testid="post">
             <img src={props.avatar} alt="avatar"/>
             <p className="name">{props.userName}</p>
             <p className="messageDate">{props.postDate.substr(0, 10)}</p>

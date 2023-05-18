@@ -61,7 +61,7 @@ const Home = (props) => {
     }, [props.userData.isLogged]);
     
     return (
-        <div className="view">
+        <div className="view" data-testid="home">
             {props.userData.isLogged && <AddPost getLatestPosts={getLatestPosts} setPostError={setPostError} />}
             {props.userData.isLogged && postError.isError &&
                 <div className="error">
