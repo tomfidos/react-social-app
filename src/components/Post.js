@@ -83,7 +83,7 @@ const Post = (props) => {
             {props.isLogged &&
                 <button className="button likePost" onClick={(event) => togglePostGradeDirection(event, props.likes, props.userId, props.postId)}>{getPostGradeDirection(props.likes, props.userId)}</button>
             }
-            <p className="likeNumber">{props.likes.length}</p>
+            <p className="likeNumber" data-testid="likeNumber">{props.likes.length}</p>
         </div>
     );
 
